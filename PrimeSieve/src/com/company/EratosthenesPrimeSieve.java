@@ -7,32 +7,48 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class EratosthenesPrimeSieve implements  PrimeSieve{
+    private int max;
 
-
-    @Override
-    public boolean isPrime(int p) {
-        List<Integer> numbers = Stream.iterate(1, n -> n + 1)
-                .limit(p)
-                .collect(Collectors.toList());
-
-        Integer[] numArr = new Integer[numbers.size()];
-        numArr = numbers.toArray(numArr);
-
-        return true;
+    public EratosthenesPrimeSieve(int max){
+        this.max = max;
 
     }
 
     @Override
-    public void printPrimes(int max) {
+    public boolean isPrime(int a) {
+        boolean prime[] = new boolean[max+1];
+        for(int i=0;i<=max;i++)
+            prime[i] = true;
+
+        for(int p = 2; p*p <=max; p++)
+        {
+            // If prime[p] is not changed, then it is a prime
+            if(prime[p])
+            {
+                // Update all multiples of p
+                for(int i = p*p; i <= max; i += p)
+                    prime[i] = false;
+            }
+            return prime[a];
+        }
+
+
+    return true;
+    }
+
+    @Override
+    public void printPrimes() {
+
+        for (int i = 1; i < max; i++){
+            System.out.println(i + " : " + isPrime(i));
+        }
+
 
     }
 
     public static void main(String[] args) {
-        EratosthenesPrimeSieve eps = new EratosthenesPrimeSieve();
-        Scanner s = new Scanner(System.in);
-        System.out.println("Obergrenze eingeben");
-        int max = s.nextInt();
-        eps.printPrimes(max);
+    EratosthenesPrimeSieve eps = new EratosthenesPrimeSieve(10);
+        eps.printPrimes();
     }
 
 }
